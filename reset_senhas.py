@@ -5,6 +5,7 @@ import pandas as pd
 import pyperclip
 from tkinter import filedialog
 import tkinter as tk
+from tkinter import filedialog, messagebox
 
 # Caminhos das imagens
 IMAGEM_LOGIN_PATH = "D:\\estudo\\regradeacesso\\imagens\\login.png"
@@ -18,23 +19,24 @@ def verificar_imagem(image_path):
         raise FileNotFoundError(f"Arquivo de imagem {image_path} não encontrado.")
     return image_path
 
-def clicar_na_imagem(imagem, timeout=30):
+def clicar_na_imagem(imagem, timeout=30, offset=(0, 0)):
     start_time = time.time()
     while True:
         try:
             localizacao = pyautogui.locateCenterOnScreen(imagem, confidence=0.8)
             if localizacao is not None:
-                pyautogui.click(localizacao)
-                print(f"Clicou na imagem {imagem} em {localizacao}")
-                break
+                pyautogui.click(localizacao.x + offset[0], localizacao.y + offset[1])
+                print(f"Clicou na imagem {imagem} em {localizacao} com offset {offset}")
+                return True  # Retorna True se clicou na imagem
         except Exception as e:
             print(f"Erro ao procurar a imagem: {e}")
 
         if time.time() - start_time > timeout:
             print(f"Não foi possível encontrar a imagem {imagem} dentro do tempo limite.")
             break
-        
+
         time.sleep(1)
+    return False  # Retorna False se não encontrou a imagem dentro do tempo limite
 
 def preencher_campo_login_excel(login):
     pyperclip.copy(login)
@@ -48,20 +50,24 @@ def processar_logins():
         return
 
     DF = pd.read_excel(EXCEL_PATH)
-    
+
     if not DF.empty:
-        # Clicar na imagem login.png na primeira vez e digitar o primeiro login
-        clicar_na_imagem(IMAGEM_LOGIN_PATH)
+        # Clicar na imagem login.png na primeira vez com offset (0, 30)
+        clicou_login = clicar_na_imagem(IMAGEM_LOGIN_PATH, offset=(0, 20))
         time.sleep(0.4)
         preencher_campo_login_excel(DF.iloc[0]['Login'])
-        
+
         for index, row in DF.iterrows():
             login = row['Login']
-            
+
             if index > 0:  # Pular a primeira iteração, pois já processamos o primeiro login
                 # Clicar na imagem senha.png
-                clicar_na_imagem(IMAGEM_SENHA_PATH)
+                clicou_senha = clicar_na_imagem(IMAGEM_SENHA_PATH)
                 time.sleep(0.4)
+
+                if not clicou_senha:
+                    print("Não foi possível clicar na imagem de senha. Encerrando o processo.")
+                    break
 
                 # Pressionar shift + tab 12 vezes
                 pyautogui.keyDown('shift')
@@ -75,6 +81,13 @@ def processar_logins():
             # Atualizar status no DataFrame
             DF.at[index, 'Status'] = 'ok'
             DF.to_excel(EXCEL_PATH, index=False)
+            print(f"Processado login {login}")
+
+        # Clicar na imagem de senha após o último login
+        clicar_na_imagem(IMAGEM_SENHA_PATH)
+        print("Último login processado. Clicou na imagem de senha.")
+        messagebox.showinfo("Último Login", "Todos os logins foram processados com sucesso.")
+
 
 def selecionar_arquivo():
     global EXCEL_PATH
@@ -86,10 +99,3 @@ def selecionar_arquivo():
 imagem_login_completa = verificar_imagem(IMAGEM_LOGIN_PATH)
 imagem_senha_completa = verificar_imagem(IMAGEM_SENHA_PATH)
 
-root = tk.Tk()
-root.title("Selecionar Arquivo Excel")
-
-selecionar_button = tk.Button(root, text="Selecionar Arquivo Excel", command=selecionar_arquivo)
-selecionar_button.pack(pady=20)
-
-root.mainloop()
