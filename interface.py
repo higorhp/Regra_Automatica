@@ -10,6 +10,9 @@ import sys
 
 # Importe suas funções específicas para automação
 from automacao_acesso import executar_automacao, salvar_no_final, clicar_pagina_x_usuarios
+from reset_senhas import selecionar_arquivo, processar_logins
+from matricula_senha import selecionar_arquivo_matri, processar_logins_matri
+
 
 IMAGEM_PATH = "C:\\Users\\higor.pacheco\\Desktop\\estudo\\regradeacesso_2\\imagens"
 primeira_vez = True
@@ -95,28 +98,14 @@ def importar_usuarios():
 def mostrar_mensagem_formato():
     messagebox.showinfo("Formato da Planilha", "A planilha deve conter os seguintes cabeçalhos: Nome, Nome do Campo, Parâmetro e os sistemas como colunas.")
 
-def iniciar_reset_senhas():
-    filepath = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
-    if filepath:
-        df = pd.read_excel(filepath)
-        if 'Login' not in df.columns or 'Status' not in df.columns:
-            messagebox.showerror("Erro", "A planilha deve conter os cabeçalhos: Login e Status.")
-            return
 
-        # Sua lógica de reset de senhas vai aqui
-        for index, row in df.iterrows():
-            login = row["Login"]
-            status = row["Status"]
-            if status.lower() != 'ok':
-                # Adicione aqui a lógica para reset de senhas
-                # Exemplo: resetar_senha(login)
-                print(f"Reseting password for {login}")
-                # Marcar como 'ok' após o reset
-                df.at[index, 'Status'] = 'ok'
-        
-        # Salvar o arquivo atualizado
-        df.to_excel(filepath, index=False)
-        messagebox.showinfo("Sucesso", "Reset de senhas concluído e status atualizado.")
+def iniciar_reset_senhas():
+    processar_logins()
+    selecionar_arquivo()
+
+def iniciar_matricula_senhas():
+    processar_logins_matri()
+    selecionar_arquivo_matri()
 
 def abrir_janela_log():
     janela_log = tk.Toplevel(root)
@@ -157,7 +146,7 @@ notebook.add(frame_regra_acesso, text="Regra de Acesso")
 
 # Cria o frame para a aba de Reset de Senhas
 frame_reset_senhas = tk.Frame(notebook, bg="#add8e6")
-notebook.add(frame_reset_senhas, text="Reset de Senhas")
+notebook.add(frame_reset_senhas, text="Controle de Acesso")
 
 # Centraliza os widgets da aba de Regra de Acesso
 titulo_janela = tk.Label(frame_regra_acesso, text="Regra de Acesso Automática", bg="#add8e6", fg="black", font=("Roboto", 16, "bold"))
@@ -210,12 +199,31 @@ formato_button.grid(row=9, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
 # Adicionando botão de Log
 tk.Button(frame_regra_acesso, text="Log", command=abrir_janela_log, bg="#FF6347", fg="white", font=("Roboto", 10, "bold")).grid(row=8, column=1, padx=10, pady=5, sticky="e")
 
-# Adiciona o texto centralizado na aba de Reset de Senhas
-label_texto_reset = tk.Label(frame_reset_senhas, text="Reset de Senhas", bg="#add8e6", fg="black", font=("Roboto", 16, "bold"))
-label_texto_reset.grid(row=0, column=0, columnspan=2, padx=(130, 100), pady=5, sticky="n")
+# Variável para armazenar a escolha do usuário
+escolha_var = tk.StringVar(value="")
 
-iniciar_reset_button = tk.Button(frame_reset_senhas, text="Iniciar Reset de Senhas", command=iniciar_reset_senhas, bg="#008000", fg="white", font=("Roboto", 10, "bold"))
-iniciar_reset_button.grid(row=1, column=0, columnspan=2, padx=(130, 100), pady=5, sticky="ew")
+# Adiciona o texto centralizado na aba de Reset de Senhas
+label_pergunta = tk.Label(frame_reset_senhas, text="O que você deseja fazer?", bg="#add8e6", fg="black", font=("Roboto", 14, "bold"))
+label_pergunta.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="n")
+
+radio_reset_senhas = tk.Radiobutton(frame_reset_senhas, text="Reset de senhas", variable=escolha_var, value="reset_senhas", bg="#add8e6", fg="black", font=("Roboto", 12, "bold"))
+radio_reset_senhas.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+
+radio_matricula_senhas = tk.Radiobutton(frame_reset_senhas, text="Reset e Matrículas", variable=escolha_var, value="matricula_senhas", bg="#add8e6", fg="black", font=("Roboto", 12, "bold"))
+radio_matricula_senhas.grid(row=2, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+
+# Função para executar a ação baseada na escolha do usuário
+def executar_acao():
+    escolha = escolha_var.get()
+    if escolha == "reset_senhas":
+        iniciar_reset_senhas()
+    elif escolha == "matricula_senhas":
+        iniciar_matricula_senhas()
+    else:
+        messagebox.showwarning("Aviso", "Por favor, selecione uma opção antes de executar.")
+
+botao_executar = tk.Button(frame_reset_senhas, text="Selecionar arquivo e executar", command=executar_acao, bg="#008000", fg="white", font=("Roboto", 12, "bold"))
+botao_executar.grid(row=3, column=0, columnspan=2, padx=10, pady=20, sticky="n")
 
 # Adiciona o texto informando sobre as colunas necessárias na aba de Reset de Senhas
 mensagem_reset = """
@@ -226,7 +234,18 @@ Certifique-se de que a planilha contenha as seguintes colunas:
 Exemplo:
 Login | Status
 """
-label_mensagem_reset = tk.Label(frame_reset_senhas, text=mensagem_reset, bg="#add8e6", fg="black", font=("Roboto", 10))
-label_mensagem_reset.grid(row=2, column=0, columnspan=2, padx=(20, 20), pady=5, sticky="n")
+
+mensagem_reset2 = """
+Antes de executar o programa, 
+certifique-se de arrastar os ícones de senha e 
+disquete para a esquerda, dentro do portal.
+"""
+
+label_mensagem_reset = tk.Label(frame_reset_senhas, text=mensagem_reset, bg="#add8e6", fg="purple", font=("Roboto", 10, "bold"))
+label_mensagem_reset.grid(row=4, column=0, columnspan=2, padx=(20, 20), pady=5, sticky="n")
+
+label_mensagem_reset = tk.Label(frame_reset_senhas, text=mensagem_reset2, bg="#add8e6", fg="red", font=("Roboto", 12, "bold"))
+label_mensagem_reset.grid(row=5, column=0, columnspan=2, padx=(20, 20), pady=5, sticky="n")
+
 
 root.mainloop()

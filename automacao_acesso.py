@@ -38,14 +38,14 @@ def executar_automacao(nome, sistema, nome_campo, parametro):
             pyautogui.press('backspace')
             time.sleep(0.3)
             pyautogui.typewrite(texto[-2])
-            if texto.lower() not in ["contratos", "estudo de custo versão 2"]:  # Verifica se o texto não é "CONTRATOS"
+            if texto.lower() not in ["contratos", "estudo de custo versão 2","gerente"]:  # Verifica se o texto não é "CONTRATOS"
                 pyautogui.press('down')
                 time.sleep(0)
         if press_tab:
-            if texto.lower() == ["contratos","ESTUDO DE CUSTO VERSÃO 2"]:
+            if texto.lower() == ["contratos","ESTUDO DE CUSTO VERSÃO 2","GERENTE"]:
                 pyautogui.press('enter')  # Se for "CONTRATOS", pressiona "enter"
             else:
-                pyautogui.press('enter')  # Pressiona "tab" para outros textos
+                pyautogui.press('enter')  
                 time.sleep(0)
                 pyautogui.press('tab')
 
