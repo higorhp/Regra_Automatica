@@ -5,13 +5,17 @@ import pandas as pd
 import pyperclip
 from tkinter import filedialog
 import tkinter as tk
-from tkinter import filedialog, messagebox
+import sys
+
+# Obtém o diretório onde o executável está sendo executado
+diretorio_atual = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+IMAGEM_PATH = os.path.join(diretorio_atual, "imagens")
 
 # Caminhos das imagens
-IMAGEM_LOGIN_PATH = "D:\\estudo\\regradeacesso\\imagens\\login.png"
-IMAGEM_MATRICULA_PATH = "D:\\estudo\\regradeacesso\\imagens\\matricula.png"
-IMAGEM_SENHA_PATH = "D:\\estudo\\regradeacesso\\imagens\\senha.png"
-IMAGEM_SALVAR_PATH = "D:\\estudo\\regradeacesso\\imagens\\salvei.png"
+IMAGEM_LOGIN_PATH = os.path.join(IMAGEM_PATH, "login.png")
+IMAGEM_MATRICULA_PATH = os.path.join(IMAGEM_PATH, "matricula.png")
+IMAGEM_SENHA_PATH = os.path.join(IMAGEM_PATH, "senha.png")
+IMAGEM_CARREGANDO_PATH = os.path.join(IMAGEM_PATH, "carregando.png")
 
 EXCEL_PATH = ""
 DF = pd.DataFrame()
@@ -39,7 +43,22 @@ def clicar_na_imagem(imagem, timeout=30, offset=(0, 0)):
             return None  # Retorna None se não encontrou a imagem dentro do tempo limite
         
         time.sleep(1)
-    
+
+def esperar_imagem_desaparecer(imagem):
+    print(f"Aguardando a imagem {imagem} desaparecer...")
+    while True:
+        try:
+            localizacao = pyautogui.locateCenterOnScreen(imagem, confidence=0.8)
+            if localizacao is None:
+                print(f"A imagem {imagem} desapareceu.")
+                return
+        except pyautogui.ImageNotFoundException:
+            print(f"A imagem {imagem} desapareceu.")
+            return
+        except Exception as e:
+            print(f"Erro ao verificar a imagem: {e}")
+
+        time.sleep(1)
 
 def preencher_campo_login_excel(login):
     pyperclip.copy(login)
@@ -56,25 +75,29 @@ def processar_logins_matri():
 
     if not DF.empty:
         # Clicar na imagem login.png na primeira vez com deslocamento (0, 30) e digitar o primeiro login
-        clicou_login = clicar_na_imagem(IMAGEM_LOGIN_PATH, offset=(0, 20))
+        clicou_login = clicar_na_imagem(IMAGEM_LOGIN_PATH, offset=(0, 10))
         time.sleep(0.4)
         preencher_campo_login_excel(DF.iloc[0]['Login'])
 
         for index, row in DF.iterrows():
             login = row['Login']
+            matricula = row['Matricula']
 
             if index > 0:  # Pular a primeira iteração, pois já processamos o primeiro login
                 # Digitar o login
                 preencher_campo_login_excel(login)
+                time.sleep(1.4)
 
             # Clicar na imagem matricula.png com deslocamento
-            clicou_matricula = clicar_na_imagem(IMAGEM_MATRICULA_PATH, offset=(0, 30))
+            clicou_matricula = clicar_na_imagem(IMAGEM_MATRICULA_PATH, offset=(0, 40))
             if not clicou_matricula:
                 print("Não foi possível clicar na imagem de matrícula. Encerrando o processo.")
                 break
-
-            # Digitar o código "-4"
-            pyautogui.typewrite("-4")
+            pyautogui.doubleClick(clicou_matricula)
+            time.sleep(0.3)
+            # Digitar a matrícula do usuário
+            pyperclip.copy(matricula)
+            pyautogui.hotkey('ctrl', 'v')
             time.sleep(0.5)
 
             # Clicar na imagem senha.png
@@ -86,10 +109,12 @@ def processar_logins_matri():
 
             # Clicar um pouco à esquerda da imagem de senha
             pyautogui.click(clicou_senha[0] - 16, clicou_senha[1])
-            print(f"Clicou um pouco à esquerda da imagem de senha em {clicou_senha[0] - 10, clicou_senha[1]}")
-            
-            time.sleep(15)  # Esperar um pouco após o clique
-            
+            print(f"Clicou um pouco à esquerda da imagem de senha em {clicou_senha[0] - 16, clicou_senha[1]}")
+
+            time.sleep(0.7)
+            # Esperar a imagem carregando.png desaparecer
+            esperar_imagem_desaparecer(IMAGEM_CARREGANDO_PATH)
+
             pyautogui.keyDown('shift')
             for _ in range(12):
                 pyautogui.press('tab')
@@ -100,15 +125,14 @@ def processar_logins_matri():
             DF.to_excel(EXCEL_PATH, index=False)
             print(f"Processado login {login}")
 
-
 def selecionar_arquivo_matri():
     global EXCEL_PATH
     EXCEL_PATH = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
-    if EXCEL_PATH:
+    if (EXCEL_PATH):
         print(f"Arquivo Excel selecionado: {EXCEL_PATH}")
         processar_logins_matri()
 
 imagem_login_completa = verificar_imagem(IMAGEM_LOGIN_PATH)
 imagem_matricula_completa = verificar_imagem(IMAGEM_MATRICULA_PATH)
 imagem_senha_completa = verificar_imagem(IMAGEM_SENHA_PATH)
-imagem_salvar_completa = verificar_imagem(IMAGEM_SALVAR_PATH)
+imagem_carregando_completa = verificar_imagem(IMAGEM_CARREGANDO_PATH)

@@ -6,10 +6,15 @@ import pyperclip
 from tkinter import filedialog
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import sys
+
+# Obtém o diretório onde o executável está sendo executado
+diretorio_atual = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+IMAGEM_PATH = os.path.join(diretorio_atual, "imagens")
 
 # Caminhos das imagens
-IMAGEM_LOGIN_PATH = "D:\\estudo\\regradeacesso\\imagens\\login.png"
-IMAGEM_SENHA_PATH = "D:\\estudo\\regradeacesso\\imagens\\senha.png"
+IMAGEM_LOGIN_PATH = os.path.join(IMAGEM_PATH, "login.png")
+IMAGEM_SENHA_PATH = os.path.join(IMAGEM_PATH, "senha.png")
 
 EXCEL_PATH = ""
 DF = pd.DataFrame()
@@ -53,7 +58,7 @@ def processar_logins():
 
     if not DF.empty:
         # Clicar na imagem login.png na primeira vez com offset (0, 30)
-        clicou_login = clicar_na_imagem(IMAGEM_LOGIN_PATH, offset=(0, 20))
+        clicou_login = clicar_na_imagem(IMAGEM_LOGIN_PATH, offset=(0, 10))
         time.sleep(0.4)
         preencher_campo_login_excel(DF.iloc[0]['Login'])
 
@@ -86,6 +91,8 @@ def processar_logins():
         # Clicar na imagem de senha após o último login
         clicar_na_imagem(IMAGEM_SENHA_PATH)
         print("Último login processado. Clicou na imagem de senha.")
+        time.sleep(3)
+        
         messagebox.showinfo("Último Login", "Todos os logins foram processados com sucesso.")
 
 
@@ -98,4 +105,3 @@ def selecionar_arquivo():
 
 imagem_login_completa = verificar_imagem(IMAGEM_LOGIN_PATH)
 imagem_senha_completa = verificar_imagem(IMAGEM_SENHA_PATH)
-

@@ -14,7 +14,8 @@ from reset_senhas import selecionar_arquivo, processar_logins
 from matricula_senha import selecionar_arquivo_matri, processar_logins_matri
 
 
-IMAGEM_PATH = "C:\\Users\\higor.pacheco\\Desktop\\estudo\\regradeacesso_2\\imagens"
+diretorio_atual = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+IMAGEM_PATH = os.path.join(diretorio_atual, "imagens")
 primeira_vez = True
 nome_entry_ref = None  # Referência para o Entry onde o usuário digita o nome
 
@@ -29,10 +30,8 @@ class PrintRedirector:
         self.text_widget.see(tk.END)
         self.text_widget.update_idletasks()  # Atualiza a interface gráfica
 
-
     def flush(self):
         pass
-
 
 def iniciar_automacao():
     nomes = nome_entry.get().split(",")
@@ -58,6 +57,7 @@ def iniciar_automacao():
     if pagina_var.get() == 1:
         ultimo_nome = nomes[-1].strip() if nomes else ""
         clicar_pagina_x_usuarios(ultimo_nome, sistemas)
+    
 
 def importar_usuarios():
     filepath = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])

@@ -1,8 +1,10 @@
 import os
 import pyautogui
 import time
+import sys
 
-IMAGEM_PATH = "D:\\estudo\\regradeacesso\\imagens"
+diretorio_atual = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+IMAGEM_PATH = os.path.join(diretorio_atual, "imagens")
 
 def verificar_imagem(image_name):
     image_path = os.path.join(IMAGEM_PATH, image_name)
@@ -23,8 +25,8 @@ SISTEMA_IMAGENS_SCROLL = {
     "ANUAL": ("anual.png", 0),
     "ESTUDO DE CUSTO": ("estudo.png", 0),
     "CONTROLE POLICIA FEDERAL": ("federal.png", 0),
-    "TELEFONIA": ("telefonia.png", 0),
-    "OCORRENCIA": ("ocorrencia.png", -200),
+    "TELEFONIA": ("telefonia.png", -300),
+    "OCORRENCIA": ("ocorrencia.png", -300),
     "PONTO WEB": "ponto.png",
     "SISTEMA DE DOCUMENTOS": ("documentos.png", -800),
     "CONTRATOS": ("contratos.png", -800),

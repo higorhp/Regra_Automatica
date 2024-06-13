@@ -2,9 +2,11 @@ import os
 import pyautogui
 import time
 import pyperclip
+import sys
 from clicar_recursos import clicar_pagina_x_usuarios
 
-IMAGEM_PATH = "D:\\estudo\\regradeacesso\\imagens"
+diretorio_atual = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+IMAGEM_PATH = os.path.join(diretorio_atual, "imagens")
 primeira_vez = True
 
 def verificar_imagem(image_name):
