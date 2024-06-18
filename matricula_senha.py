@@ -20,6 +20,13 @@ IMAGEM_CARREGANDO_PATH = os.path.join(IMAGEM_PATH, "carregando.png")
 EXCEL_PATH = ""
 DF = pd.DataFrame()
 
+def corrigir_login(login):
+    if isinstance(login, float):
+        login = str(int(login))
+    else:
+        login = str(login)
+    return login
+
 def verificar_imagem(image_path):
     if not os.path.isfile(image_path):
         raise FileNotFoundError(f"Arquivo de imagem {image_path} não encontrado.")
@@ -72,6 +79,7 @@ def processar_logins_matri():
         return
 
     DF = pd.read_excel(EXCEL_PATH)
+    DF['Login'] = DF['Login'].apply(corrigir_login)  # Corrige os valores na coluna 'Login'
 
     if not DF.empty:
         # Clicar na imagem login.png na primeira vez com deslocamento (0, 30) e digitar o primeiro login
@@ -89,7 +97,7 @@ def processar_logins_matri():
                 time.sleep(1.4)
 
             # Clicar na imagem matricula.png com deslocamento
-            clicou_matricula = clicar_na_imagem(IMAGEM_MATRICULA_PATH, offset=(0, 40))
+            clicou_matricula = clicar_na_imagem(IMAGEM_MATRICULA_PATH, offset=(0, 30))
             if not clicou_matricula:
                 print("Não foi possível clicar na imagem de matrícula. Encerrando o processo.")
                 break
@@ -116,7 +124,7 @@ def processar_logins_matri():
             esperar_imagem_desaparecer(IMAGEM_CARREGANDO_PATH)
 
             pyautogui.keyDown('shift')
-            for _ in range(12):
+            for _ in range(14):
                 pyautogui.press('tab')
             pyautogui.keyUp('shift')
                     
@@ -128,7 +136,7 @@ def processar_logins_matri():
 def selecionar_arquivo_matri():
     global EXCEL_PATH
     EXCEL_PATH = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
-    if (EXCEL_PATH):
+    if EXCEL_PATH:
         print(f"Arquivo Excel selecionado: {EXCEL_PATH}")
         processar_logins_matri()
 

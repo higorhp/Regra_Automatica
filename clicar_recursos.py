@@ -25,13 +25,13 @@ SISTEMA_IMAGENS_SCROLL = {
     "ANUAL": ("anual.png", 0),
     "ESTUDO DE CUSTO": ("estudo.png", 0),
     "CONTROLE POLICIA FEDERAL": ("federal.png", 0),
-    "TELEFONIA": ("telefonia.png", -300),
-    "OCORRENCIA": ("ocorrencia.png", -300),
-    "PONTO WEB": "ponto.png",
+    "TELEFONIA": ("telefonia.png", 0),
+    "OCORRENCIA": ("ocorrencia.png", -200),
+    "PONTO WEB": ("ponto.png", -300),
     "SISTEMA DE DOCUMENTOS": ("documentos.png", -800),
-    "CONTRATOS": ("contratos.png", -800),
-    "REVISÃO": ("revisao.png", -800),
-    "SISTEMA DE BENEFÍCIOS": ("beneficios.png", -900),
+    "CONTRATOS": ("contratos.png", -600),
+    "REVISÃO": ("revisao.png", -350),
+    "SISTEMA DE BENEFÍCIOS": ("beneficios.png", -600),
     "EXPORTACAO": ("exportacao.png", -1750),
 }
 
@@ -84,24 +84,41 @@ def clicar_pagina_x_usuarios(nome, sistemas):
                     scroll = 0
 
                 if scroll != 0:
-                    if scroll == -800 and not scroll_menos_mil_realizado:
+                    if scroll == -600 and not scroll_menos_mil_realizado:
                         pyautogui.scroll(scroll)
                         print(f'Scroll de {scroll} realizado para o sistema "{sistema}".')
                         time.sleep(1)
                         scroll_menos_mil_realizado = True
-                    elif scroll != -800:
+                    elif scroll != -600:
                         pyautogui.scroll(scroll)
                         print(f'Scroll de {scroll} realizado para o sistema "{sistema}".')
                         time.sleep(1)
 
-                imagem_pos = localizar_imagem(imagem, confidence=0.8)
+                imagem_pos = localizar_imagem(imagem, confidence=0.7)
                 if imagem_pos:
                     pyautogui.click(imagem_pos)
                     print(f'Clicado na imagem "{imagem}".')
                     pyautogui.press('down')
                     time.sleep(0.5)
-                    pyautogui.press('enter')
-                    print(f'Tecla "Down" e "Enter" pressionadas após "{sistema}".')
+                    
+                    # Define a imagem a ser clicada com base no sistema
+                    if sistema.upper() == "PONTO WEB":
+                        imagem_para_clicar = "LEIT.png"
+                    elif sistema.upper() in ["CONTRATOS", "ESTUDO DE CUSTO"]:
+                        imagem_para_clicar = "CORD.png"
+                    elif sistema.upper() == "TELEFONIA":
+                        imagem_para_clicar = "GER.png"
+                    else:
+                        imagem_para_clicar = "USER.png"
+
+                    # Localiza e clica na imagem específica
+                    imagem_para_clicar_pos = localizar_imagem(imagem_para_clicar, confidence=0.8)
+                    if imagem_para_clicar_pos:
+                        pyautogui.click(imagem_para_clicar_pos)
+                        print(f'Clicado na imagem "{imagem_para_clicar}".')
+                    else:
+                        print(f'Imagem "{imagem_para_clicar}" não encontrada.')
+
                 else:
                     print(f'Imagem "{imagem}" não encontrada para o sistema "{sistema}".')
 
@@ -115,16 +132,25 @@ def clicar_pagina_x_usuarios(nome, sistemas):
                         print('Clicado na imagem "anual.png".')
                         pyautogui.press('down')
                         time.sleep(0.5)
-                        pyautogui.press('enter')
-                        print('Tecla "Down" e "Enter" pressionadas após "ANUAL".')
+                        
+                        # Define a imagem a ser clicada
+                        imagem_para_clicar = "USER.png"
+
+                        # Localiza e clica na imagem específica
+                        imagem_para_clicar_pos = localizar_imagem(imagem_para_clicar, confidence=0.8)
+                        if imagem_para_clicar_pos:
+                            pyautogui.click(imagem_para_clicar_pos)
+                            print(f'Clicado na imagem "{imagem_para_clicar}".')
+                        else:
+                            print(f'Imagem "{imagem_para_clicar}" não encontrada.')
 
                     # Adiciona o scroll de -1000 após "ANUAL"
-                    pyautogui.scroll(-800)
+                    pyautogui.scroll(-700)
                     print('Scroll de -1000 realizado após "ANUAL".')
 
                 # Adiciona o scroll de 1000 após "CONTRATOS"
                 if sistema.upper() == "CONTRATOS":
-                    pyautogui.scroll(800)
+                    pyautogui.scroll(900)
                     print('Scroll de 1000 realizado após "CONTRATOS".')
                     imagem_pos = localizar_imagem("estudo.png", confidence=0.8)
                     if imagem_pos:
@@ -132,8 +158,17 @@ def clicar_pagina_x_usuarios(nome, sistemas):
                         print('Clicado na imagem "estudo.png".')
                         pyautogui.press('down')
                         time.sleep(0.5)
-                        pyautogui.press('enter')
-                        print('Tecla "Down" e "Enter" pressionadas após "ESTUDO DE CUSTO".')
+                        
+                        # Define a imagem a ser clicada
+                        imagem_para_clicar = "CORD.png"
+
+                        # Localiza e clica na imagem específica
+                        imagem_para_clicar_pos = localizar_imagem(imagem_para_clicar, confidence=0.8)
+                        if imagem_para_clicar_pos:
+                            pyautogui.click(imagem_para_clicar_pos)
+                            print(f'Clicado na imagem "{imagem_para_clicar}".')
+                        else:
+                            print(f'Imagem "{imagem_para_clicar}" não encontrada.')
 
                     # Adiciona o scroll de -1000 após "ESTUDO DE CUSTO"
                     pyautogui.scroll(-800)
@@ -149,14 +184,24 @@ def clicar_pagina_x_usuarios(nome, sistemas):
                 print(f'Clicado na imagem "{SISTEMA_IMAGENS_SCROLL["EXPORTACAO"][0]}".')
                 pyautogui.press('down')
                 time.sleep(0.5)
-                pyautogui.press('enter')
-                print(f'Tecla "Down" e "Enter" pressionadas após "EXPORTACAO".')
+                
+                # Define a imagem a ser clicada
+                imagem_para_clicar = "USER.png"
+
+                # Localiza e clica na imagem específica
+                imagem_para_clicar_pos = localizar_imagem(imagem_para_clicar, confidence=0.8)
+                if imagem_para_clicar_pos:
+                    pyautogui.click(imagem_para_clicar_pos)
+                    print(f'Clicado na imagem "{imagem_para_clicar}".')
+                else:
+                    print(f'Imagem "{imagem_para_clicar}" não encontrada.')
+
             else:
                 print(f'Imagem "{SISTEMA_IMAGENS_SCROLL["EXPORTACAO"][0]}" não encontrada para o sistema "EXPORTACAO".')
 
         # Realiza um scroll adicional de -750 se "EXPORTACAO" estiver junto com outros sistemas
         elif exportacao_selecionado and len(sistemas) > 1:
-            pyautogui.scroll(-100)
+            pyautogui.scroll(-300)
             print(f'Scroll adicional de -750 realizado para o sistema "EXPORTACAO".')
             time.sleep(1)
             imagem_pos = localizar_imagem(SISTEMA_IMAGENS_SCROLL["EXPORTACAO"][0], confidence=0.8)
@@ -165,10 +210,19 @@ def clicar_pagina_x_usuarios(nome, sistemas):
                 print(f'Clicado na imagem "{SISTEMA_IMAGENS_SCROLL["EXPORTACAO"][0]}".')
                 pyautogui.press('down')
                 time.sleep(0.5)
-                pyautogui.press('enter')
-                print(f'Tecla "Down" e "Enter" pressionadas após "EXPORTACAO".')
-            else:
-                print(f'Imagem "{SISTEMA_IMAGENS_SCROLL["EXPORTACAO"][0]}" não encontrada para o sistema "EXPORTACAO".')
+                
+                # Define a imagem a ser clicada
+                imagem_para_clicar = "USER.png"
+
+                # Localiza e clica na imagem específica
+                imagem_para_clicar_pos = localizar_imagem(imagem_para_clicar, confidence=0.8)
+                if imagem_para_clicar_pos:
+                    pyautogui.click(imagem_para_clicar_pos)
+                    print(f'Clicado na imagem "{imagem_para_clicar}".')
+                else:
+                    print(f'Imagem "{imagem_para_clicar}" não encontrada.')
 
     except Exception as e:
         print(f"Erro ao tentar clicar na imagem 'Pagina X Usuários': {e}")
+
+
