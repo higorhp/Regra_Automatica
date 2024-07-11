@@ -37,9 +37,12 @@ SISTEMA_IMAGENS_SCROLL = {
     "VR": ("vr.png", -2200),
     "VT": ("vt.png", -2300),
     "AO": ("ao.png", -2400),
+    "VA": ("va.png", -2130),
     "ADIMISSAO": ("admissao.png", -23550),
     "RESCISAO": ("rescisao.png", -23550),
     "FERIAS": ("ferias.png", -23550),
+    "CRM": ("crm.png", -18500),
+    "SRA":("sra.png", -7350)
 }
 
 def clicar_pagina_x_usuarios(nome, sistemas):
@@ -139,6 +142,31 @@ def clicar_pagina_x_usuarios(nome, sistemas):
 
     except Exception as e:
         print(f"Erro ao tentar clicar na imagem 'Pagina X Usuários': {e}")
+
+def clicar_va():
+    try:
+        imagem_scroll = SISTEMA_IMAGENS_SCROLL.get("VA")
+        if imagem_scroll:
+            imagem, scroll = imagem_scroll
+            if scroll != 0:
+                pyautogui.scroll(scroll)
+                print(f'Scroll de {scroll} realizado para o sistema "VR".')
+                time.sleep(1)
+
+            imagem_pos = localizar_imagem(imagem, confidence=0.7)
+            pyautogui.doubleClick(imagem_pos.x -20,imagem_pos.y)
+            print(f'Clicado na imagem "{imagem}".')
+            pyautogui.press('down')
+            time.sleep(0.5)
+
+            # Realiza um scroll de 1000 após encontrar a imagem do sistema
+            pyautogui.scroll(3000)
+            print('Scroll de 1000 realizado após encontrar a imagem do sistema.')
+            time.sleep(0.3)
+            
+            # Aqui você pode adicionar lógica adicional específica para VR, se necessário
+    except Exception as e:
+            print(f"Erro ao tentar clicar em VR: {e}")
 
 def clicar_vr():
     try:
@@ -290,11 +318,62 @@ def clicar_admissa():
             # Realiza um scroll de 1000 após encontrar a imagem do sistema
             pyautogui.scroll(70000)
             print('Scroll de 1000 realizado após encontrar a imagem do sistema.')
-            time.sleep(0.3)
+            time.sleep(0.5)
             
             # Aqui você pode adicionar lógica adicional específica para AO, se necessário
 
     except Exception as e:
         print(f"Erro ao tentar clicar em AO: {e}")
 
+def clicar_CRM():
+    try:
+        imagem_scroll = SISTEMA_IMAGENS_SCROLL.get("CRM")
+        if imagem_scroll:
+            imagem, scroll = imagem_scroll
+            if scroll != 0:
+                pyautogui.scroll(scroll)
+                print(f'Scroll de {scroll} realizado para o sistema "CRM".')
+                time.sleep(1)
 
+            imagem_pos = localizar_imagem(imagem, confidence=0.7)
+            pyautogui.doubleClick(imagem_pos.x - 40,imagem_pos.y)
+            print(f'Clicado na imagem "{imagem}".')
+            pyautogui.press('down')
+            time.sleep(0.5)
+
+            # Realiza um scroll de 1000 após encontrar a imagem do sistema
+            pyautogui.scroll(70000)
+            print('Scroll de 1000 realizado após encontrar a imagem do sistema.')
+            time.sleep(0.5)
+            
+            # Aqui você pode adicionar lógica adicional específica para AO, se necessário
+
+    except Exception as e:
+        print(f"Erro ao tentar clicar em AO: {e}")
+
+def clicar_SRA():
+    try:
+        imagem_scroll = SISTEMA_IMAGENS_SCROLL.get("SRA")
+        if imagem_scroll:
+            imagem, scroll = imagem_scroll
+            if scroll != 0:
+                pyautogui.scroll(scroll)
+                print(f'Scroll de {scroll} realizado para o sistema "SRA".')
+                time.sleep(1)
+
+            imagem_pos = localizar_imagem(imagem, confidence=0.7)
+            pyautogui.click(imagem_pos.x - 50,imagem_pos.y)
+            print(f'Clicado na imagem "{imagem}".')
+            pyautogui.press('down')
+            time.sleep(0.5)
+
+            # Realiza um scroll de 1000 após encontrar a imagem do sistema
+            pyautogui.scroll(70000)
+            print('Scroll de 1000 realizado após encontrar a imagem do sistema.')
+            time.sleep(0.5)
+            
+            # Aqui você pode adicionar lógica adicional específica para AO, se necessário
+
+    except Exception as e:
+        print(f"Erro ao tentar clicar em AO: {e}")
+        
