@@ -1,0 +1,371 @@
+/* Corpo da página */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-image: url('background.jpg'); /* A imagem do fundo que se move */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Mantém o fundo fixo enquanto o conteúdo rola */
+  overflow-y: hidden; /* Esconde a barra de rolagem vertical */
+  overflow-x: hidden; /* Esconde a barra de rolagem horizontal, caso apareça */
+  color: #fff;
+  transition: background-position 0.3s ease;
+  scrollbar-width: none;
+}
+
+/* Estilo para a seção inicial (home) */
+.home {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(46, 45, 45, 0.5)), url('background.jpg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura ocupando toda a tela */
+  transition: opacity 1s ease, background-image 1s ease;
+  opacity: 1;
+}
+
+/* Transição entre a home e a próxima seção */
+.home-out {
+  opacity: 0;
+  background-image: url('background.jpg');
+  height: 100vh; /* Mantenha altura completa para garantir que a transição não empurre o conteúdo */
+}
+
+/* Continuar com os outros estilos das seções */
+.sobre-mim, .projetos, .contato {
+  padding: 20px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease, transform 0.5s ease;
+  display: none;
+  transform: translateY(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borda */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra */
+  border-radius: 8px; /* Bordas arredondadas */
+  backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+}
+
+
+/* Adiciona transição de background para a seção 'Sobre Mim' */
+.sobre-mim {
+  transition: background-image 1s ease; /* Transição de imagem de fundo */
+}
+
+/* Quando a seção 'Sobre Mim' estiver visível */
+.sobre-mim.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Quando a seção 'Contato' estiver visível */
+.contato.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estilos adicionais */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.logo h1 {
+  font-size: 2.5em;
+  color: #FF5722;
+}
+
+.profile-info {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.profile-image {
+  width: 20vw;
+  height: 20vw;
+  max-width: 250px;
+  max-height: 250px;
+  border: 5px solid #FF5722;
+  border-radius: 50%;
+  padding: 5px;
+  margin-left: 20px;
+}
+
+.profile-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Títulos das seções e faixa */
+.section-title {
+  background-color: #FF5722;
+  padding: 10px 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  border-radius: 20px;
+  z-index: 2; /* Certifique-se de que o título esteja acima de outros elementos */
+}
+
+.section-title h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.8em;
+}
+
+/* Menu oculto */
+.menu {
+  position: fixed;
+  top: 35px;
+  right: 35px;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease; /* Adiciona uma transição suave */
+}
+
+/* Ícone do Menu */
+.menu-icon {
+  font-size: 2em;
+  color: #fff;
+  transition: transform 0.3s ease, color 0.3s ease; /* Transição para transformação e cor */
+}
+
+.menu-icon:hover {
+  transform: scale(1.1); /* Aumenta o ícone ao passar o mouse */
+  color: #6422ff; /* Altera a cor ao passar o mouse */
+}
+
+.menu-icon:active {
+  transform: scale(0.95); /* Reduz o ícone ao ser clicado */
+  transition: transform 0.1s ease; /* Transição rápida para o efeito de clique */
+}
+
+/* Dropdown do menu */
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #333;
+  border-radius: 10px;
+  flex-direction: column;
+  opacity: 0; /* Inicialmente invisível */
+  transform: translateY(-10px); /* Leve deslocamento para a animação */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none; /* Impede que o dropdown seja clicável quando invisível */
+}
+
+.dropdown.show {
+  opacity: 1; /* Torna visível */
+  transform: translateY(0); /* Remove o deslocamento para a animação */
+  pointer-events: auto; /* Permite cliques quando visível */
+}
+
+.dropdown a {
+  display: block;
+  padding: 10px 15px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease; /* Transição suave na cor de fundo */
+}
+
+.dropdown a:hover {
+  background-color: #444; /* Cor de fundo ao passar o mouse */
+  border-radius: 10px;
+}
+
+/* Hover no menu */
+.menu:hover .dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* Torna o dropdown clicável */
+}
+
+/* Adicionando um pouco de espaçamento ao menu */
+.menu {
+  padding: 10px;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.icons i {
+  font-size: 40px;
+  color: #FF5722;
+  margin: 0 10px;
+  transition: transform 0.3s;
+}
+
+.icons i:hover {
+  transform: scale(1.2);
+}
+
+.custom-icon {
+  width: 40px;
+  color: #ff5722;
+  height: auto;
+  margin: 0 10px;
+}
+
+.section-enter {
+  opacity: 100;
+  transition: opacity 0.5s ease-in;
+}
+
+/* Ao adicionar a classe ativa, a seção aparece e desliza */
+.section-enter-active {
+  opacity: 1;
+}
+
+/* Container principal */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  padding: 20px;
+}
+
+/* Texto principal ao lado da imagem */
+.main-content h2 {
+  font-size: 3.5em;
+  margin-top: 20px;
+  color: #FF5722;
+}
+
+/* Estilo para a imagem */
+.profile-image {
+  border: 5px solid #ff5722;
+}
+
+/* Outros ajustes */
+.text-info, .project {
+  text-align: left;
+}
+
+.descricao {
+  font-size: 1.3em;
+  color: #FF5722; /* Aqui você pode substituir pelo código da cor que deseja */
+}
+
+.Idade {
+  font-size: 1.3em;
+  color: #FF5722; /* Aqui você pode substituir pelo código da cor que deseja */
+}
+
+.beat-effect {
+  animation: beat 1s infinite;
+}
+
+@keyframes beat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.section-title h2 {
+  transition: transform 0.3s;
+}
+
+.section-title h2:hover {
+  transform: scale(1.02);
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+p {
+  line-height: 1.6;
+  font-size: 1.1em;
+}
+
+/* Seção de Projetos */
+.projetos {
+  padding: 25px 20px;
+  background-color: rgba(244, 244, 244, 0); /* Cor de fundo semi-transparente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+
+.projetos.active {
+  opacity: 1;
+}
+
+/* Cards dos Projetos */
+.project-cards {
+  padding: 30px 30px;
+  display: flex;
+  justify-content: space-between; /* Coloca o espaçamento uniforme entre os cards */
+  gap: 20px;
+  flex-wrap: nowrap; /* Impede a quebra de linha */
+  margin-top: 50px; /* Adiciona o espaçamento no topo dos cards */
+}
+
+/* Estilos individuais de cada card */
+.project-card {
+  background-color: rgba(255, 255, 255, 0.8); /* Fundo transparente */
+  border: 1px solid #FF5722;
+  border-radius: 10px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  flex-grow: 1;
+}
+
+.project-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.project-header {
+  margin-bottom: 15px;
+}
+
+.project-header h3 {
+  font-size: 1.8em;
+  margin: 0 0 10px;
+  color: #FF5722;
+}
+
+.project-header p {
+  font-size: 1em;
+  margin: 0;
+  color: #666;
+}
+
+.project-card p {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Ajustes de responsividade */
+@media (max-width: 768px) {
+  .project-cards {
+    flex-direction: column;
+  }
+
+  .project-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .project-card {
+    width: 45%;
+  }
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higor Souza – Soluções em Automação e Desenvolvimento Python</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+    <!-- Ícone do Menu -->
+    <div class="menu">
+        <span class="menu-icon">&#9776;</span>
+        <div class="dropdown">
+            <a href="#home">Home Page</a>
+            <a href="#sobre-mim">Sobre Mim</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#contato">Contato</a>
+        </div>
+    </div>
+
+    <!-- Seção Inicial -->
+    <div class="home" id="home">
+        <div class="logo">
+            <div class="icons">
+                <i class="fa-brands fa-python fa-beat"></i> <!-- Ícone de Código -->
+                <img src="chat-gpt.png" alt="Seu Ícone" class="custom-icon beat-effect">
+                <!-- Ícone Personalizado com Efeito -->
+                <i class="fa-solid fa-robot fa-beat"></i> <!-- Ícone de E-mail -->
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="profile-info">
+                <div class="text-info">
+                    <h2>Olá, me chamo Higor.<br>Muito prazer.</h2>
+                    <p>Soluções Inteligentes para Problemas Cotidianos.</p>
+                </div>
+                <div class="profile-image">
+                    <img src="higor.jpg" alt="Foto de Higor Souza">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção Sobre Mim -->
+    <div class="sobre-mim" id="sobre-mim">
+        <div class="section-title">
+            <h2>Sobre Mim</h2>
+        </div>
+        <div class="profile-info">
+            <div class="text-info">
+                <section id="sobre-mim">
+                    <h2>Olá!</h2>
+                    <p>Me chamo Higor Souza, tenho 25 anos.</p>
+                    <p>Sou um Analista de Sistemas Jr. Aspirante a desenvolvedor Python. Tenho experiência em criar
+                        automações para otimizar processos diários no trabalho, além de conhecimento em Power Automate
+                        para a construção de bots de envio de mensagens.</p>
+                    <p>Estou sempre em busca de novas formas de aplicar tecnologia para resolver problemas e aumentar a
+                        eficiência. Entusiasta do ChatGPT, utilizo ferramentas de IA para aprimorar a produtividade e o
+                        aprendizado contínuo.</p>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção Projetos -->
+    <div class="projetos" id="projetos">
+        <div class="section-title">
+            <h2>Projetos</h2>
+        </div>
+        <div class="project-cards">
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>Projeto Jarvis</h3>
+                    <p><strong>Início:</strong>Em Desenvolvimento</p>
+                </div>
+                <p>Estou desenvolvendo um assistente virtual inspirado no Jarvis, focado em automação e comandos de voz.
+                    O projeto inclui funcionalidades como ativação por comando, controle de dispositivos como lâmpadas
+                    inteligentes, ajuste de volume do Windows e execução de tarefas rotineiras. O código foi
+                    modularizado para facilitar a manutenção, e estou integrando novos recursos como verificação de
+                    temperatura atual e respostas inteligentes.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>Projeto Portfólio</h3>
+                    <p><strong>Início:</strong>Em Desenvolvimento</p>
+                </div>
+                <p>Estou desenvolvendo um portfólio pessoal usando HTML e CSS, com o objetivo de mostrar minhas
+                    habilidades como Analista de Sistemas Jr. e meus projetos de automação. O portfólio possui uma
+                    estrutura limpa e moderna, focada em usabilidade e design responsivo, e inclui detalhes sobre meu
+                    conhecimento em Python, automação com IA e ferramentas como Power Automate.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>Projeto Consolidador de Planilhas Automático</h3>
+                    <p><strong>Início:</strong>Concluído</p>
+                </div>
+                <p>Este projeto visa automatizar o processo de consolidação de planilhas em um único arquivo. Ele
+                    utiliza Python para integrar diferentes fontes de dados, realizar cálculos e gerar relatórios
+                    automaticamente, economizando tempo e reduzindo erros humanos no processo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção Contato -->
+    <div class="contato" id="contato">
+        <div class="section-title">
+            <h2>Contato</h2>
+        </div>
+        <div class="profile-info">
+            <div class="text-info">
+                <p><strong>Number:</strong> 12345</p>
+                <p><strong>E-mail:</strong> 12345</p>
+                <p><strong>Local:</strong> Cotia, SP</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Exibe/oculta o menu dropdown ao clicar
+        document.querySelector('.menu-icon').addEventListener('click', () => {
+            const dropdownMenu = document.querySelector('.dropdown');
+
+            // Alterna a classe show para exibir/ocultar com animação
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Fecha o menu dropdown quando o mouse sair de cima
+        document.querySelector('.dropdown').addEventListener('mouseleave', () => {
+            const dropdownMenu = document.querySelector('.dropdown');
+            dropdownMenu.classList.remove('show'); // Remove a classe show para ocultar
+        });
+
+        // Função de transição suave entre as seções
+        const sections = document.querySelectorAll('.sobre-mim, .projetos, .contato');
+        const homeSection = document.querySelector('.home');
+        const allSections = [homeSection, ...sections];
+        let currentSectionIndex = 0; // Índice da seção visível atual
+
+        // Inicializa as seções
+        allSections.forEach(section => {
+            section.classList.add('section-enter');
+        });
+
+        // Função para alterar a seção visível
+        function changeSection(nextIndex) {
+            if (nextIndex >= 0 && nextIndex < allSections.length) {
+                // Oculta a seção atual
+                const currentSection = allSections[currentSectionIndex];
+                currentSection.classList.remove('section-enter-active');
+                currentSection.style.opacity = '0';
+                setTimeout(() => currentSection.style.display = 'none', 500);
+
+                // Se for para mudar da home para uma seção, muda o fundo
+                if (nextIndex !== 0) {
+                    // Troca o background
+                    document.body.style.transition = 'background 1s ease';
+                    document.body.style.backgroundImage = nextIndex === 1 ? 'url("background.jpg")' : 'url("background.jpg")';
+                } else {
+                    // Retorna o fundo para o original
+                    document.body.style.transition = 'background 1s ease';
+                    document.body.style.backgroundImage = 'url("background.jpg")';
+                }
+
+                // Exibe a próxima seção
+                const nextSection = allSections[nextIndex];
+                setTimeout(() => {
+                    nextSection.style.display = nextIndex === 0 ? 'flex' : 'block'; // Garante o 'display: flex' na home
+                    setTimeout(() => {
+                        nextSection.classList.add('section-enter-active');
+                        nextSection.style.opacity = '1';
+                    }, 50);
+                }, 500);
+
+                // Atualiza o índice da seção atual
+                currentSectionIndex = nextIndex;
+            }
+        }
+
+        // Detecta o scroll do mouse e navega pelas seções
+        let isScrolling = false;
+        document.addEventListener('wheel', (event) => {
+            if (!isScrolling) {
+                isScrolling = true;
+                if (event.deltaY > 0) {
+                    // Rolando para baixo
+                    changeSection(currentSectionIndex + 1);
+                } else {
+                    // Rolando para cima
+                    changeSection(currentSectionIndex - 1);
+                }
+                setTimeout(() => isScrolling = false, 1000); // Espera 1 segundo para a próxima navegação
+            }
+        });
+
+        // Ações de clique no menu dropdown
+        document.querySelectorAll('.dropdown a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                const targetIndex = Array.from(allSections).indexOf(targetSection);
+
+                changeSection(targetIndex);
+            });
+        });
+
+        // Para voltar à home ao clicar no link "Home Page"
+        document.querySelector('.menu a[href="#home"]').addEventListener('click', () => {
+            changeSection(0); // Volta para a home
+        });
+
+        // Função para mover a imagem de fundo com o mouse
+        document.addEventListener('mousemove', (event) => {
+            const x = (event.clientX / window.innerWidth) * 100;
+            const y = (event.clientY / window.innerHeight) * 100;
+            document.body.style.backgroundPosition = `${x}% ${y}%`;
+        });
+
+        // Seleciona todos os elementos de texto que você deseja afetar
+        const textElements = document.querySelectorAll('h1, h2, h3, p'); // Adicione outros seletores conforme necessário
+
+        textElements.forEach(element => {
+            // Adiciona o evento mouseover
+            element.addEventListener('mouseover', () => {
+                element.classList.add('enlarge'); // Adiciona a classe de aumento
+            });
+
+            // Adiciona o evento mouseout
+            element.addEventListener('mouseout', () => {
+                element.classList.remove('enlarge'); // Remove a classe de aumento
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
